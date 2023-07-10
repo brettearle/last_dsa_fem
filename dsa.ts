@@ -102,3 +102,48 @@ console.log(JSON.stringify(bubbleSort([1, 3, 5, 2, 4])));
 
 //-------------------------------------------------------------------------------------
 // Linked List - Node based data structure
+// TODO! implement this later
+
+//-------------------------------------------------------------------------------------
+// Queue - first in first out
+
+interface Queue<T> {
+  length: number | null;
+  head?: QNode<T> | null;
+  tail?: QNode<T> | null;
+  val: QNode<T> | null;
+  enqueue: (item: any) => void;
+  deque: () => T | undefined;
+  peek: () => T | undefined;
+}
+
+type QNode<T> = {
+  value: T;
+  next?: QNode<T>;
+};
+
+const numQueueConstructor = (): Queue<number> => {
+  return {
+    length: null,
+    head: null,
+    tail: null,
+    val: null,
+    enqueue: (item: number) => {
+      if (!this.tail) {
+        this.tail = this.head = { value: item } as QNode<number>;
+      }
+    },
+    deque: () => {
+      if (!this.head) {
+        return null;
+      }
+      this.length--;
+      const head = this.head;
+      this.head = this.head.next;
+      return head.value;
+    },
+    peek: () => {
+      return this.head?.value;
+    },
+  };
+};
