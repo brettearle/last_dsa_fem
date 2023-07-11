@@ -111,7 +111,6 @@ interface Queue<T> {
   length: number | null;
   head?: QNode<T> | null;
   tail?: QNode<T> | null;
-  val: QNode<T> | null;
   enqueue: (item: any) => void;
   deque: () => T | undefined;
   peek: () => T | undefined;
@@ -124,14 +123,17 @@ type QNode<T> = {
 
 const numQueueConstructor = (): Queue<number> => {
   return {
-    length: null,
+    length: 0,
     head: null,
     tail: null,
-    val: null,
     enqueue: (item: number) => {
+      const itemAsNode = { value: item } as QNode<Number>;
+      this.length++;
       if (!this.tail) {
-        this.tail = this.head = { value: item } as QNode<number>;
+        this.tail = this.head = itemAsNode;
       }
+      this.tail.next = itemAsNode;
+      this.tail = itemAsNode;
     },
     deque: () => {
       if (!this.head) {
@@ -147,3 +149,5 @@ const numQueueConstructor = (): Queue<number> => {
     },
   };
 };
+
+//-----------------------------------------------------------------------------
