@@ -151,3 +151,44 @@ const numQueueConstructor = (): Queue<number> => {
 };
 
 //-----------------------------------------------------------------------------
+// Stack "pretty much constant time"
+
+type SNode<T> = {
+  value: T;
+  prev?: SNode<T>;
+};
+
+function buildAStack<T>(snode: SNode<T>) {
+  const stack = {
+    length: 0,
+    head: undefined as SNode<T> | undefined,
+    push: (item: T): void => {
+      if (stack.head === undefined) {
+        const snode = { value: item } as SNode<T>;
+        stack.head = snode;
+        return;
+      }
+
+      snode.prev = stack.head;
+      stack.head = snode;
+    },
+    pop: (): T | undefined => {
+      stack.length = Math.max(0, stack.length - 1);
+      if (stack.length === 0) {
+        const savedHead = stack.head;
+        stack.head = undefined;
+        return savedHead?.value;
+      }
+      const savedHead = stack.head;
+      stack.head = stack.head?.prev;
+      return savedHead?.value;
+    },
+    peek: (): T | undefined => {
+      return stack.head?.value;
+    },
+  };
+
+  return {
+    stack,
+  };
+}
